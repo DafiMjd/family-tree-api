@@ -1,7 +1,7 @@
-export default function makeUpdateFamily({ db }) {
+export default function makeUpdateFamily({ familyDb }) {
   return async function updateChildrenId(familyId, personId) {
     try {
-      return db.updateChildrenId(familyId, personId);
+      return familyDb.updateChildrenId(familyId, personId);
 
     } catch (e) {
       throw e;

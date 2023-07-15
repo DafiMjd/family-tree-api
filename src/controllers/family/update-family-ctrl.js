@@ -1,8 +1,8 @@
 export default function makeUpdateFamilyCtrl({ updateFamily }) {
   return async function update(req) {
     try {
-      const familyId = req.params.familyId;
-      const personId = req.params.personId;
+      const familyId = req.query.familyId;
+      const personId = req.query.childrenId;
       
       const result = await updateFamily(familyId, personId);
 
