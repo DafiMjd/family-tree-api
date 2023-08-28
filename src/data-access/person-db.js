@@ -6,6 +6,7 @@ export default function makeDb({ knex }) {
     deletePerson,
     getMarriedPerson,
     getSinglePerson,
+    getAncestors,
   });
 
   async function getAllPerson() {
@@ -58,10 +59,11 @@ export default function makeDb({ knex }) {
     }
   }
 
-  async function getMarriedPerson() {
+  async function getMarriedPerson(gender) {
     try {
       const res = await knex('person')
         .select()
+        .where('gender', gender)
         .whereNot('coupleId', null);
 
       return res;
@@ -77,6 +79,28 @@ export default function makeDb({ knex }) {
         .where('gender', gender)
         .where('coupleId', null);
 
+      return res;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async function getAncestors() {
+    try {
+      const childrenIdsRaw = await knex
+        .select('family.childrenId')
+        .from('family')
+        .whereNot('family.childrenId', null);
+
+      const childrenIds = [];
+      for (const index in childrenIdsRaw) {
+        childrenIds.push(...childrenIdsRaw[index]['childrenId']);
+      }
+
+      const res = await knex.select('*')
+        .from({ a: 'person' })
+        .whereNotIn('a.id', childrenIds)
+        .whereNotIn('a.coupleId', childrenIds);
       return res;
     } catch (e) {
       throw e;

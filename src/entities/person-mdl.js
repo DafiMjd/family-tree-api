@@ -1,6 +1,6 @@
 
 
-export default function buildMakePerson() {
+export default function buildMakePersonMdl() {
   return function makePerson({
     id,
     name,

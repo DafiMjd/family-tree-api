@@ -28,8 +28,6 @@ export default function makeDb({ knex }) {
   }
 
   async function getFamilyByFatherId(id) {
-
-    console.log(34);
     try {
       const res = await knex('family')
         .select()

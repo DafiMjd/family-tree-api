@@ -1,16 +1,39 @@
-export default function makeGetFamilyCtrl({ getFamily }) {
+export default function makeGetFamilyCtrl({ getFamily, getPerson }) {
   return async function get(req) {
     try {
       const id = req.params.id;
       const fatherId = req.query.fatherId;
       let result;
+      let family
+
       if (id) {
-        result = await getFamily.getFamily(id);
+        family = await getFamily.getFamily(id);
       } else if (fatherId) {
-        result = await getFamily.getFamilyByFatherId(fatherId);
+        family = await getFamily.getFamilyByFatherId(fatherId);
       } else {
-        result = await getFamily.getFamily();
+        family = await getFamily.getFamily();
       }
+      console.log(family);
+
+      const children = [];
+
+      if (family.childrenId && family.childrenId.length) {
+        const childrenIds = family.childrenId;
+        for (let index = 0; index < childrenIds.length; index++) {
+          children.push(await getPerson.getPerson(childrenIds[index]));
+        }
+        result = Object.assign(
+          family,
+          { children: children }
+        );
+      }
+
+
+
+      result = Object.assign(
+        family,
+        { children: children }
+      );
 
       let error;
       if (!result) {

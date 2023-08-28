@@ -1,5 +1,5 @@
-import buildMakePerson from './person.js';
-import buildMakeFamily from './family.js';
+import buildMakePersonMdl from './person-mdl.js';
+import buildMakeFamilyMdl from './family-mdl.js';
 
-export const makePerson = buildMakePerson();
-export const makeFamily = buildMakeFamily();
+export const makePersonMdl = buildMakePersonMdl();
+export const makeFamilyMdl = buildMakeFamilyMdl();

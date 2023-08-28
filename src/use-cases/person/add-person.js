@@ -1,7 +1,7 @@
-export default function makeAddPerson({ makePerson, personDb }) {
+export default function makeAddPerson({ makePersonMdl, personDb }) {
   return async function addPerson(personData) {
     try {
-      const person = makePerson(personData);
+      const person = makePersonMdl(personData);
 
       return personDb.insertPerson(
         person.getName(),

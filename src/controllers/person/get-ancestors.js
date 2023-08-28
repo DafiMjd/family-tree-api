@@ -1,8 +1,8 @@
-export default function makeGetMarriedPersonCtrl({ getPerson }) {
+export default function makeGetAncestorsCtrl({ getPerson }) {
   return async function get(req) {
     try {
-      const gender = req.query.gender;
-      const result = await getPerson.getMarriedPerson(gender);
+      const result = await getPerson.getAncestors();
+
       let error;
       if (!result) {
         error = 'Data not found';

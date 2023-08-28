@@ -1,4 +1,4 @@
-export default function makeGetFamily({ familyDb }) {
+export default function makeGetFamily({ familyDb, personDb, makeFamilyMdl }) {
   return Object.freeze({
     getFamily,
     getFamilyByFatherId,
@@ -7,9 +7,16 @@ export default function makeGetFamily({ familyDb }) {
   async function getFamily(id) {
     try {
       if (id) {
-        return familyDb.getFamilyById(id);
+        const family = await familyDb.getFamilyById(id);
+        const mergedJSON = Object.assign(
+          family,
+          await getParents(family['fatherId'], family['motherId']),
+        );
+
+        return mergedJSON;
       }
-      return familyDb.getAllFamily();
+      const res = await familyDb.getAllFamily();
+      return res;
 
     } catch (e) {
       throw e;
@@ -17,10 +24,15 @@ export default function makeGetFamily({ familyDb }) {
   }
 
   async function getFamilyByFatherId(id) {
-    console.log(id);
     try {
       if (id) {
-        return familyDb.getFamilyByFatherId(id);
+        const family = await familyDb.getFamilyByFatherId(id);
+        const mergedJSON = Object.assign(
+          family,
+          await getParents(family.fatherId, family.motherId),
+        );
+
+        return mergedJSON;
       } else {
         throw 'father id is required'
       }
@@ -28,5 +40,12 @@ export default function makeGetFamily({ familyDb }) {
     } catch (e) {
       throw e;
     }
+  }
+
+  async function getParents(fatherId, motherId) {
+    const father = await personDb.getPersonById(fatherId);
+    const mother = await personDb.getPersonById(motherId);
+
+    return { father: father, mother: mother };
   }
 }

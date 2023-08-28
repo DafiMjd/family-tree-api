@@ -1,4 +1,4 @@
-export default function buildMakeFamily() {
+export default function buildMakeFamilyMdl() {
   return function makeFamily({
     id,
     fatherId,
@@ -14,11 +14,15 @@ export default function buildMakeFamily() {
       throw new Error('Child cannot also be parent');
     }
 
-    return Object.freeze({
-      getId: () => id,
-      getFatherId: () => fatherId,
-      getMotherId: () => motherId,
-      getChildrenId: () => childrenId
-    });
+    return {
+      id: id,
+      fatherId: fatherId,
+      motherId: motherId,
+      childrenId: childrenId,
+    };
+
+    function json() {
+      return JSON.stringify(this);
+    }
   };
 }
